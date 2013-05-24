@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Static pages" do
 
-  let title = 'Twitterish 2'
+  let(:title) { 'Twitterish 2' }
 
   describe "Home page" do
     it "should have the content 'Twitterish 2'" do
