@@ -1,15 +1,18 @@
 require 'spec_helper'
 
 describe "Static pages" do
+
+  let title = 'Twitterish 2'
+
   describe "Home page" do
     it "should have the content 'Twitterish 2'" do
       visit '/static_pages/home'
-      page.should have_selector('h1', :text => 'Twitterish 2')
+      page.should have_selector('h1', :text => "#{title}")
     end
     
     it "should have the right title" do
       visit '/static_pages/home'
-      page.should have_selector('title', :text => "Twitterish 2 | Home") 
+      page.should have_selector('title', :text => "#{title} | Home") 
     end
   end
  
@@ -21,7 +24,7 @@ describe "Static pages" do
     
     it "should have the right title" do
       visit '/static_pages/help'
-      page.should have_selector('title', :text => "Twitterish 2 | Help") 
+      page.should have_selector('title', :text => "#{title} | Help") 
     end
   end
 
@@ -33,7 +36,7 @@ describe "Static pages" do
     
     it "should have the right title" do
       visit '/static_pages/about'
-      page.should have_selector('title', :text => "Twitterish 2 | About") 
+      page.should have_selector('title', :text => "#{title} | About") 
     end
   end
 
@@ -45,7 +48,7 @@ describe "Static pages" do
     
     it "should have the right title" do
       visit '/static_pages/contact'
-      page.should have_selector('title', :text => "Twitterish 2 | Contact Us") 
+      page.should have_selector('title', :text => "#{title} | Contact Us") 
     end
   end
 end
