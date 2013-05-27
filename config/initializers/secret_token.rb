@@ -4,4 +4,5 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Twitterish2::Application.config.secret_token = '2f19c5169cbeeb5400f969f62d85fb6fd44f8ff700adc1c94f53565841da28e0621dfdadf7cc0e0253fe83cb696b6a353fe72e927133c756bb4883d218fdca05'
+Twitterish2::Application.config.secret_token = '799f017b89ad5b4cd0c0513ecad09039892d0ccc04c5c403b5ed26eeb91e0b11530da490c1deb0608c40e18fd957a3e23a55da5c82bcb16c8eff77f777428dc8'
+Twitterish2::Application.config.secret_key_base = '799f017b89ad5b4cd0c0513ecad09039892d0ccc04c5c403b5ed26eeb91e0b11530da490c1deb0608c40e18fd957a3e23a55da5c82bcb16c8eff77f777428dc8'
