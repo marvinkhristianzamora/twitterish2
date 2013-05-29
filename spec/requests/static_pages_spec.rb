@@ -3,52 +3,61 @@ require 'spec_helper'
 describe "Static pages" do
 
   let(:title) { 'Twitterish 2' }
+  subject { page }
+
+  shared_examples_for "all static pages" do
+    it { should have_content(heading) }
+    it { should have_title(page_title) }
+  end
 
   describe "Home page" do
-    it "should have the content 'Twitterish 2'" do
-      visit '/static_pages/home'
-      page.should have_selector('h1', :text => "#{title}")
-    end
-    
-    it "should have the right title" do
-      visit '/static_pages/home'
-      expect(page).to have_title("#{title} | Home") 
-    end
+    before { visit root_path }
+    let(:heading) { "#{title}" }
+    let(:page_title) { '' }
+
+    it_should_behave_like "all static pages"
+    it { should_not have_title("| Home") }
   end
  
   describe "Help page" do
-    it "should have thet content 'Help'" do
-      visit '/static_pages/help'
-      page.should have_selector('h1', :text => 'Help')
-    end
-    
-    it "should have the right title" do
-      visit '/static_pages/help'
-      expect(page).to have_title("#{title} | Help") 
-    end
+    before { visit help_path }
+
+    let(:heading) { 'Help' }
+    let(:page_title) { 'Help' }
+
+    it_should_behave_like "all static pages"
   end
 
   describe "About page" do
-    it "should have the content 'About Us'" do
-      visit '/static_pages/about'
-      page.should have_selector('h1', :text => 'About Us')
-    end
-    
-    it "should have the right title" do
-      visit '/static_pages/about'
-      expect(page).to have_title("#{title} | About") 
-    end
+    before { visit about_path }
+
+    let(:heading) { 'About' }
+    let(:page_title) { 'About' }
+
+    it_should_behave_like "all static pages"
   end
 
   describe "Contact page" do
-    it "should have the content 'Contact Us'" do
-      visit '/static_pages/contact'
-      page.should have_selector('h1', :text => 'Contact Us')
-    end
-    
-    it "should have the right title" do
-      visit '/static_pages/contact'
-      expect(page).to have_title("#{title} | Contact Us") 
-    end
+    before { visit contact_path }
+
+    let(:heading) { 'Contact Us' }
+    let(:page_title) { 'Contact Us' }
+
+    it_should_behave_like "all static pages"
+  end
+
+  it "should have the correct links in the page" do
+    visit root_path
+    click_link "Home"
+    should have_title(full_title(''))
+    click_link "Help"
+    should have_title('Help')
+    click_link "About"
+    should have_title(full_title('About'))
+    click_link "Contact"
+    should have_title('Contact Us')
+    click_link "Home"
+    click_link "Sign up now!"
+    should have_title(full_title('Sign up'))
   end
 end
