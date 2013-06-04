@@ -36,4 +36,6 @@ Twitterish2::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.eager_load = true
+
+  ActiveModel::SecurePassword.min_cost = true
 end
