@@ -40,6 +40,7 @@ describe "User pages" do
         before { click_button submit }
         let(:user) { User.find_by(email: "marvin@email.com") }
 
+        it { should have_link('Sign out', href: signout_path) }
         it { should have_title(user.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome to Twitterish 2')}
       end
