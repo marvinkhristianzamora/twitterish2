@@ -42,7 +42,7 @@ describe "User pages" do
 
         it { should have_link('Sign out', href: signout_path) }
         it { should have_title(user.name) }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome to Twitterish 2')}
+        it { should have_success_message('Welcome to Twitterish 2') }
       end
     end
   end
