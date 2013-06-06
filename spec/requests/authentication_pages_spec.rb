@@ -40,4 +40,24 @@ describe "Authentication" do
 
     end
   end
+
+  describe "authentication" do
+    describe "for signed-out users" do
+      let(:user) { FactoryGirl.create(:user) }
+      
+      describe "in the Users controller" do
+        describe "visiting the edit page" do
+          before { visit edit_user_path(user) }
+          it { should have_link('Sign in', href: signin_path) }
+          it { should_not have_title('Edit user') }
+        end
+
+        describe "submitting to the update_action" do
+          before { patch user_path(user) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+
+    end
+  end
 end
