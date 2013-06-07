@@ -39,6 +39,17 @@ describe "Authentication" do
         it { should have_link 'Sign in', href: signin_path }
       end
 
+      describe "accessing the signup page" do
+        before { get signup_path }
+        specify { expect(response).to redirect_to(root_path) }
+      end
+
+      describe "trying to signup again" do
+        let(:initial_count) { User.count }
+        before { post users_path(user) }
+        specify { expect(response).to redirect_to(root_path) }
+        specify { expect(User.count).to eq initial_count }
+      end
     end
   end
 
@@ -46,7 +57,7 @@ describe "Authentication" do
     describe "for signed-out users" do
       let(:user) { FactoryGirl.create(:user) }
 
-      describe "it should not have restricted links" do
+      describe "visiting the home page" do
         before { visit root_path }
 
         it { should_not have_link('Users', href: users_path) }
@@ -78,6 +89,17 @@ describe "Authentication" do
         describe "after signing in" do
           it "should redirect to the desired protected page" do
             expect(page).to have_title(full_title('Edit user'))
+          end
+        end
+
+        describe "when signing in again" do
+          before do
+            delete signout_path
+            valid_signin(user)
+          end
+
+          it "should render to the default profile page" do
+            expect(page).to have_title(user.name)
           end
         end
       end
@@ -114,6 +136,15 @@ describe "Authentication" do
       describe "submitting a DELETE request for user" do
         before { delete(user_path(user)) }
         specify { expect(response).to redirect_to(root_path) }
+      end
+    end
+
+    describe "as admin user" do
+      let(:admin_user) { FactoryGirl.create(:admin) }
+      before { valid_signin(admin_user) }
+
+      it "should not be able to delete self" do
+        expect { delete user_path(admin_user) }.not_to change(User, :count)
       end
     end
   end
