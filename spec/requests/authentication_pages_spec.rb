@@ -91,6 +91,17 @@ describe "Authentication" do
             expect(page).to have_title(full_title('Edit user'))
           end
         end
+
+        describe "when signing in again" do
+          before do
+            delete signout_path
+            valid_signin(user)
+          end
+
+          it "should render to the default profile page" do
+            expect(page).to have_title(user.name)
+          end
+        end
       end
 
       describe "visiting the user index" do
