@@ -74,7 +74,7 @@ describe "User pages" do
         fill_in "Name", with: "Marvin"
         fill_in "Email", with: "marvin@email.com"
         fill_in "Password", with: "password"
-        fill_in "Confirmation", with: "password"
+        fill_in "Confirm Password", with: "password"
       end
 
       it "should create a user" do
