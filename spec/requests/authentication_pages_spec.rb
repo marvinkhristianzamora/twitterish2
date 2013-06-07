@@ -39,6 +39,17 @@ describe "Authentication" do
         it { should have_link 'Sign in', href: signin_path }
       end
 
+      describe "accessing the signup page" do
+        before { get signup_path }
+        specify { expect(response).to redirect_to(root_path) }
+      end
+
+      describe "trying to signup again" do
+        let(:initial_count) { User.count }
+        before { post users_path(user) }
+        specify { expect(response).to redirect_to(root_path) }
+        specify { expect(User.count).to eq initial_count }
+      end
     end
   end
 
@@ -46,7 +57,7 @@ describe "Authentication" do
     describe "for signed-out users" do
       let(:user) { FactoryGirl.create(:user) }
 
-      describe "it should not have restricted links" do
+      describe "visiting the home page" do
         before { visit root_path }
 
         it { should_not have_link('Users', href: users_path) }
