@@ -42,9 +42,19 @@ describe "Authentication" do
     end
   end
 
-  describe "authentication" do
+  describe "authorization" do
     describe "for signed-out users" do
       let(:user) { FactoryGirl.create(:user) }
+
+      describe "it should not have restricted links" do
+        before { visit root_path }
+
+        it { should_not have_link('Users', href: users_path) }
+        it { should_not have_link('Profile', href: user_path(user)) }
+        it { should_not have_link('Settings', href: edit_user_path(user)) }
+        it { should_not have_link('Sign out', href: signout_path) }
+        it { should have_link 'Sign in', href: signin_path }
+      end
       
       describe "in the Users controller" do
         describe "visiting the edit page" do
@@ -91,6 +101,18 @@ describe "Authentication" do
 
       describe "submitting a PATCH request to the User#update action" do
         before { patch user_path(wrong_user) }
+        specify { expect(response).to redirect_to(root_path) }
+      end
+    end
+
+    describe "as non-admin user" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:non_admin) { FactoryGirl.create(:user) }
+
+      before { valid_signin non_admin }
+
+      describe "submitting a DELETE request for user" do
+        before { delete(user_path(user)) }
         specify { expect(response).to redirect_to(root_path) }
       end
     end
