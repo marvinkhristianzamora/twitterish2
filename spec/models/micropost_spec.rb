@@ -18,4 +18,14 @@ describe Micropost do
     before { @micropost.user_id = nil }
     it { should_not be_valid }
   end
+
+  describe "when content is not present" do
+    before { @micropost.content = nil }
+    it { should_not be_valid }
+  end
+
+  describe "when content is > than 140 characters" do
+    before { @micropost.content = "x" * 141 }
+    it { should_not be_valid }
+  end
 end
