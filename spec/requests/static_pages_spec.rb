@@ -17,6 +17,44 @@ describe "Static pages" do
 
     it_should_behave_like "all static pages"
     it { should_not have_title("| Home") }
+
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+
+      describe "with multiple posts" do
+        before do
+          FactoryGirl.create(:micropost, user: user, content: "Post 1")
+          FactoryGirl.create(:micropost, user: user, content: "Post 2")
+          valid_signin user
+          visit root_path
+        end
+
+        it "should contain user posts" do
+          user.feed.each do |post|
+            expect(page).to have_selector("li##{post.id}", text: post.content)
+          end
+        end
+
+        it  "should contain user posts count" do
+          expect(page).to have_content("microposts")
+          expect(page).to have_content("#{user.microposts.count}")
+        end
+      end
+
+      describe "with single post" do
+        before do
+          FactoryGirl.create(:micropost, user: user, content: "Post 1")
+          valid_signin user
+          visit root_path
+        end
+
+        it "should contain singular micropost text" do
+          expect(page).to have_content("#{user.microposts.count}")
+          expect(page).to have_content("micropost")
+          expect(page).not_to have_content("microposts")
+        end
+      end
+    end
   end
  
   describe "Help page" do
