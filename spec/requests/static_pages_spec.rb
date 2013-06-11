@@ -20,12 +20,12 @@ describe "Static pages" do
 
     describe "for signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
+      before { valid_signin user }
 
       describe "with multiple posts" do
         before do
           FactoryGirl.create(:micropost, user: user, content: "Post 1")
           FactoryGirl.create(:micropost, user: user, content: "Post 2")
-          valid_signin user
           visit root_path
         end
 
@@ -44,7 +44,6 @@ describe "Static pages" do
       describe "with single post" do
         before do
           FactoryGirl.create(:micropost, user: user, content: "Post 1")
-          valid_signin user
           visit root_path
         end
 
@@ -53,6 +52,17 @@ describe "Static pages" do
           expect(page).to have_content("micropost")
           expect(page).not_to have_content("microposts")
         end
+      end
+
+      describe "follower/following counters" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        before do
+          other_user.follow!(user)
+          visit root_path
+        end
+
+        it { should have_link("0 following", href: following_user_path(user)) }
+        it { should have_link("1 followers", href: followers_user_path(user)) }
       end
     end
   end
