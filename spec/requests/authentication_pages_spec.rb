@@ -78,6 +78,16 @@ describe "Authentication" do
           before { patch user_path(user) }
           specify { expect(response).to redirect_to(signin_path) }
         end
+
+        describe "visiting the following page" do
+          before { visit following_user_path(user) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "visiting the followers page" do
+          before { visit followers_user_path(user) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
       end
 
       describe "trying to visit a protected page" do
