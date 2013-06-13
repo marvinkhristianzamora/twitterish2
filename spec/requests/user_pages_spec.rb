@@ -108,6 +108,11 @@ describe "User pages" do
       it { should have_content(user.microposts.count) }
     end
 
+    describe "stats" do
+      it { should have_content(user.followers.count) }
+      it { should have_content(user.followed_users.count) }
+    end
+
     describe "follow/unfollow buttons" do
       let(:other_user) { FactoryGirl.create(:user) } 
       before { valid_signin user }
